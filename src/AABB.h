@@ -35,9 +35,10 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <vector>
+#include <stdint.h>"
 
 /// Null node flag.
-const unsigned int NULL_NODE = 0xffffffff;
+const uint64_t NULL_NODE = 0xffffffff;
 
 namespace aabb
 {
@@ -61,7 +62,7 @@ namespace aabb
         /*! \param dimension
                 The dimensionality of the system.
          */
-        AABB(unsigned int);
+        AABB(uint64_t);
 
         //! Constructor.
         /*! \param lowerBound_
@@ -118,7 +119,7 @@ namespace aabb
         /*! \param dimension
                 The dimensionality of the system.
          */
-        void setDimension(unsigned int);
+        void setDimension(uint64_t);
 
         /// Lower bound of AABB in each dimension.
         std::vector<double> lowerBound;
@@ -154,22 +155,22 @@ namespace aabb
         AABB aabb;
 
         /// Index of the parent node.
-        unsigned int parent;
+        uint64_t parent;
 
         /// Index of the next node.
-        unsigned int next;
+        uint64_t  next;
 
         /// Index of the left-hand child.
-        unsigned int left;
+        uint64_t left;
 
         /// Index of the right-hand child.
-        unsigned int right;
+        uint64_t right;
 
         /// Height of the node. This is 0 for a leaf and -1 for a free node.
         int height;
 
         /// The index of the particle that the node contains (leaf nodes only).
-        unsigned int particle;
+        uint64_t particle;
 
         //! Test whether the node is a leaf.
         /*! \return
@@ -203,8 +204,8 @@ namespace aabb
             \param touchIsOverlap
                 Does touching count as overlapping in query operations?
          */
-        Tree(unsigned int dimension_= 3, double skinThickness_ = 0.05,
-            unsigned int nParticles = 16, bool touchIsOverlap=true);
+        Tree(uint64_t dimension_= 3, double skinThickness_ = 0.05,
+            uint64_t nParticles = 16, bool touchIsOverlap=true);
 
         //! Constructor (custom periodicity).
         /*! \param dimension_
@@ -226,8 +227,8 @@ namespace aabb
             \param touchIsOverlap
                 Does touching count as overlapping in query operations?
          */
-        Tree(unsigned int, double, const std::vector<bool>&, const std::vector<double>&,
-            unsigned int nParticles = 16, bool touchIsOverlap=true);
+        Tree(uint64_t, double, const std::vector<bool>&, const std::vector<double>&,
+            uint64_t nParticles = 16, bool touchIsOverlap=true);
 
         //! Set the periodicity of the simulation box.
         /*! \param periodicity_
@@ -251,7 +252,7 @@ namespace aabb
             \param radius
                 The radius of the particle.
          */
-        void insertParticle(unsigned int, std::vector<double>&, double);
+        void insertParticle(uint64_t, std::vector<double>&, double);
 
         //! Insert a particle into the tree (arbitrary shape with bounding box).
         /*! \param index
@@ -263,16 +264,16 @@ namespace aabb
             \param upperBound
                 The upper bound in each dimension.
          */
-        void insertParticle(unsigned int, std::vector<double>&, std::vector<double>&);
+        void insertParticle(uint64_t, std::vector<double>&, std::vector<double>&);
 
         /// Return the number of particles in the tree.
-        unsigned int nParticles();
+        uint64_t nParticles();
 
         //! Remove a particle from the tree.
         /*! \param particle
                 The particle index (particleMap will be used to map the node).
          */
-        void removeParticle(unsigned int);
+        void removeParticle(uint64_t);
 
         /// Remove all particles from the tree.
         void removeAll();
@@ -293,7 +294,7 @@ namespace aabb
             \return
                 Whether the particle was reinserted.
          */
-        bool updateParticle(unsigned int, std::vector<double>&, double, bool alwaysReinsert=false);
+        bool updateParticle(uint64_t, std::vector<double>&, double, bool alwaysReinsert=false);
 
         //! Update the tree if a particle moves outside its fattened AABB.
         /*! \param particle
@@ -308,7 +309,7 @@ namespace aabb
             \param alwaysReinsert
                 Always reinsert the particle, even if it's within its old AABB (default: false)
          */
-        bool updateParticle(unsigned int, std::vector<double>&, std::vector<double>&, bool alwaysReinsert=false);
+        bool updateParticle(uint64_t, std::vector<double>&, std::vector<double>&, bool alwaysReinsert=false);
 
         //! Query the tree to find candidate interactions for a particle.
         /*! \param particle
@@ -317,7 +318,7 @@ namespace aabb
             \return particles
                 A vector of particle indices.
          */
-        std::vector<unsigned int> query(unsigned int);
+        std::vector<uint64_t> query(uint64_t);
 
         //! Query the tree to find candidate interactions for an AABB.
         /*! \param particle
@@ -329,7 +330,7 @@ namespace aabb
             \return particles
                 A vector of particle indices.
          */
-        std::vector<unsigned int> query(unsigned int, const AABB&);
+        std::vector<uint64_t> query(uint64_t, const AABB&);
 
         //! Query the tree to find candidate interactions for an AABB.
         /*! \param aabb
@@ -338,32 +339,32 @@ namespace aabb
             \return particles
                 A vector of particle indices.
          */
-        std::vector<unsigned int> query(const AABB&);
+        std::vector<uint64_t> query(const AABB&);
 
         //! Get a particle AABB.
         /*! \param particle
                 The particle index.
          */
-        const AABB& getAABB(unsigned int);
+        const AABB& getAABB(uint64_t);
 
         //! Get the height of the tree.
         /*! \return
                 The height of the binary tree.
          */
-        unsigned int getHeight() const;
+        uint64_t getHeight() const;
 
         //! Get the number of nodes in the tree.
         /*! \return
                 The number of nodes in the tree.
          */
-        unsigned int getNodeCount() const;
+        uint64_t getNodeCount() const;
 
         //! Compute the maximum balancance of the tree.
         /*! \return
                 The maximum difference between the height of two
                 children of a node.
          */
-        unsigned int computeMaximumBalance() const;
+        uint64_t computeMaximumBalance() const;
 
         //! Compute the surface area ratio of the tree.
         /*! \return
@@ -380,22 +381,22 @@ namespace aabb
 
     private:
         /// The index of the root node.
-        unsigned int root;
+        uint64_t root;
 
         /// The dynamic tree.
         std::vector<Node> nodes;
 
         /// The current number of nodes in the tree.
-        unsigned int nodeCount;
+        uint64_t nodeCount;
 
         /// The current node capacity.
-        unsigned int nodeCapacity;
+        uint64_t nodeCapacity;
 
         /// The position of node at the top of the free list.
-        unsigned int freeList;
+        uint64_t freeList;
 
         /// The dimensionality of the system.
-        unsigned int dimension;
+        uint64_t dimension;
 
         /// Whether the system is periodic along at least one axis.
         bool isPeriodic;
@@ -416,7 +417,7 @@ namespace aabb
         std::vector<double> posMinImage;
 
         /// A map between particle and node indices.
-        std::unordered_map<unsigned int, unsigned int> particleMap;
+        std::unordered_map<uint64_t, uint64_t> particleMap;
 
         /// Does touching count as overlapping in tree queries?
         bool touchIsOverlap;
@@ -425,37 +426,37 @@ namespace aabb
         /*! \return
                 The index of the allocated node.
          */
-        unsigned int allocateNode();
+        uint64_t  allocateNode();
 
         //! Free an existing node.
         /*! \param node
                 The index of the node to be freed.
          */
-        void freeNode(unsigned int);
+        void freeNode(uint64_t);
 
         //! Insert a leaf into the tree.
         /*! \param leaf
                 The index of the leaf node.
          */
-        void insertLeaf(unsigned int);
+        void insertLeaf(uint64_t);
 
         //! Remove a leaf from the tree.
         /*! \param leaf
                 The index of the leaf node.
          */
-        void removeLeaf(unsigned int);
+        void removeLeaf(uint64_t);
 
         //! Balance the tree.
         /*! \param node
                 The index of the node.
          */
-        unsigned int balance(unsigned int);
+        uint64_t balance(uint64_t);
 
         //! Compute the height of the tree.
         /*! \return
                 The height of the entire tree.
          */
-        unsigned int computeHeight() const;
+        uint64_t computeHeight() const;
 
         //! Compute the height of a sub-tree.
         /*! \param node
@@ -464,19 +465,19 @@ namespace aabb
             \return
                 The height of the sub-tree.
          */
-        unsigned int computeHeight(unsigned int) const;
+        uint64_t computeHeight(uint64_t) const;
 
         //! Assert that the sub-tree has a valid structure.
         /*! \param node
                 The index of the root node.
          */
-        void validateStructure(unsigned int) const;
+        void validateStructure(uint64_t) const;
 
         //! Assert that the sub-tree has valid metrics.
         /*! \param node
                 The index of the root node.
          */
-        void validateMetrics(unsigned int) const;
+        void validateMetrics(uint64_t) const;
 
         //! Apply periodic boundary conditions.
         /* \param position
