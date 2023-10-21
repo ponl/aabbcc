@@ -35,7 +35,7 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <vector>
-#include <stdint.h>"
+#include <stdint.h>
 
 /// Null node flag.
 const uint64_t NULL_NODE = 0xffffffff;
